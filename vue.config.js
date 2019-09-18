@@ -13,58 +13,6 @@ module.exports = {
       }
     }
   },
-  // module: {
-  //   rules: [
-  //     {
-  //       test: /\.svg$/,
-  //       loader: 'svg-sprite-loader',
-  //       include: [resolve('src/icon')],
-  //       options: {
-  //       symbolId: 'icon-[name]'
-  //       }
-  //     },
-  //     {
-  //       test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-  //       loader: 'url-loader',
-  //       exclude: [resolve('src/icons')],
-  //       options: {
-  //       limit: 10000,
-  //       name: utils.assetsPath('img/[name].[hash:7].[ext]')
-  //       }
-  //     }
-  //   ]
-  // },
-  chainWebpack: config => {
-    const svgRule = config.module.rule('svg')
-    // 清除已有的所有 loader。
-    // 如果你不这样做，接下来的 loader 会附加在该规则现有的 loader 之后。
-    svgRule.uses.clear()
-    svgRule
-      .test(/\.svg$/)
-      .include.add(path.resolve(__dirname, './src/icons'))
-      .end()
-      .use('svg-sprite-loader')
-      .loader('svg-sprite-loader')
-      .options({
-        symbolId: 'icon-[name]'
-      })
-    const fileRule = config.module.rule('file')
-    fileRule.uses.clear()
-    fileRule
-      .test(/\.svg$/)
-      .exclude.add(path.resolve(__dirname, './src/icons'))
-      .end()
-      .use('file-loader')
-      .loader('file-loader')
-  },
-  css: {
-    loaderOptions: { // 向 CSS 相关的 loader 传递选项
-      less: {
-        javascriptEnabled: true
-      },
-    }
-  },
-  
   chainWebpack: (config)=>{
     // 初始化快捷路径
     config.resolve.alias
@@ -76,6 +24,23 @@ module.exports = {
       args[0]['process.env'].BASE_URL = JSON.stringify(process.env.BASE_URL)
       return args
     })
+
+    // set svg-sprite-loader
+    config.module
+      .rule('svg')
+      .exclude.add(resolve('src/icons'))
+      .end()
+    config.module
+      .rule('icons')
+      .test(/\.svg$/)
+      .include.add(resolve('src/icons'))
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]'
+      })
+      .end()
 
     // 图片压缩配置
     // config.module
@@ -105,25 +70,27 @@ module.exports = {
   },
   devServer: {
     port: 8060,  
-    // proxy: {
-    //   [process.env.VUE_APP_BASE_API]: {
-    //     target: `http://127.0.0.1:8060/mock`,
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       ['^' + process.env.VUE_APP_BASE_API]: ''
-    //     }
-    //   }
-    // },
-    // after: require('./mock/mock-server.js')
-    '/system': {
-      target: 'http://192.168.5.237:8762', // 开发环境
-      changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
-      ws: true
-    },
-    '/route': {
-      target: 'http://192.168.5.237:8762', // 开发环境
-      changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
-      ws: true
-    },
+    proxy: {
+      // '/system': {
+      //   target: 'http://192.168.0.215:8762', // 开发环境
+      //   changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+      //   ws: true
+      // },
+      // '/route': {
+      //   target: 'http://192.168.0.215:8762', // 开发环境
+      //   changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+      //   ws: true
+      // },
+      '/system': {
+        target: 'http://192.168.5.237:8762', // 开发环境
+        changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+        ws: true
+      },
+      '/route': {
+        target: 'http://192.168.5.237:8762', // 开发环境
+        changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+        ws: true
+      },
+    }
   }
 }

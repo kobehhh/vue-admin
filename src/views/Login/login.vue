@@ -1,22 +1,29 @@
 <template>
   <div class="content">
     <div class="login">
-      <div class="login-bg"></div>
         <div class="login-container">
           <Form ref="formInline" :model="formInline">
-            <FormItem prop="user">
-                <Input type="text" v-model="formInline.user" placeholder="Username">
-                    <Icon type="ios-person-outline" slot="prepend"></Icon>
+            <div class="login-title">
+              <h1>login form</h1>
+    <svg-icon icon-class="peoples" />
+
+            </div>
+            <FormItem prop="user" class="login-input"> 
+                <Input type="text" prefix="ios-contact" v-model="formInline.user" placeholder="Username" class="login-input">
+                    <!-- <Icon type="ios-person-outline" size="14" slot="prepend"></Icon> -->
                 </Input>
             </FormItem>
             <FormItem prop="password">
-                <Input type="password" v-model="formInline.password" placeholder="Password">
-                    <Icon type="ios-lock-outline" slot="prepend"></Icon>
+                <Input :type="pwdType" prefix="ios-lock-outline" v-model="formInline.password" placeholder="Password" class="login-input"> 
+                    <!-- <Icon type="ios-lock-outline" slot="prepend" @click="showPwd"></Icon> -->
                 </Input>
+                    <span  ><Icon type="ios-lock-outline" slot="prepend"></Icon></span>
             </FormItem>
             <FormItem>
-                <Button type="primary" @click="handleSubmit('formInline')">Signin</Button>
-            </FormItem>
+                <Button class="login-btn" type="primary" @click="handleSubmit('formInline')">Signin</Button>
+            </FormItem>123
+    <svg-icon icon-class="peoples" />
+
           </Form>
         </div>
     </div>
@@ -31,6 +38,7 @@ export default {
         user: '',
         password: ''
       },
+      pwdType:'password'
     }
   },
   methods:{
@@ -41,6 +49,13 @@ export default {
       },
       handleSubmit() {
         console.log(1)
+      },
+      showPwd() {
+        if(this.pwdType == 'password') {
+          this.pwdType = 'text'
+        }else {
+          this.pwdType = 'password'
+        }
       }
   },
   mounted(){
@@ -49,13 +64,41 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@bgc:#2d3a4b;
 .content{
   overflow:hidden;
-  width: 100%;
-  height: 969px;
-  .login{
-    width: 400px;
-    height: 400px;
+  // width: 100%;
+  // height: 100%;
+  top:0;
+  right: 0;
+  bottom :0;
+  left: 0;
+  position: absolute;
+  background-color: @bgc;
+  & .login{
+    margin: 0 auto;
+    padding: 160px 35px 0px 35px;
+    width: 520px;
+    // height: 400px;
+    .login-title{
+      color: #fff;
+      font-size: 26px;
+      margin-bottom: 40px;
+    }
+    .ivu-input {
+      width: 100%;
+      height: 47px;
+    }
+    .login-btn{
+      width: 100%;
+      height: 47px;
+      border-radius: 5px;
+    }
   }
 }
+@media only screen and (max-width: 870px) {
+    .login-btn {
+      display: none;
+    }
+  }
 </style>

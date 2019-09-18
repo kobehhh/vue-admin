@@ -7,6 +7,8 @@ import store from './store'
 import './plugins/iview.js'
 import { Message,Modal } from 'iview'
 
+import './icons'
+
 //css
 import 'iview/dist/styles/iview.css'
 
