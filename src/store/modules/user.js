@@ -1,8 +1,14 @@
 const state = {
-  name:'',
+  fixedHeader:false,
+  needTagsView:false
 }
 const mutations = {
-
+  setFixedHeader:(state,data) => {
+    state.fixedHeader = data
+  },
+  setNeedTagsView:(state,data) => {
+    state.needTagsView = data
+  }
 }
 const actions = {
 

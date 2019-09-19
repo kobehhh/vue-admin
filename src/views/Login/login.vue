@@ -20,7 +20,7 @@
                 </span>
             </FormItem>
             <FormItem class="login-item">
-                <Button class="login-btn" type="primary" @click="handleSubmit('formInline')">Signin</Button>
+                <Button class="login-btn" type="primary" @click="submitLogin">Signin</Button>
             </FormItem>
           </Form>
         </div>
@@ -45,8 +45,8 @@ export default {
           console.log(res)
         })
       },
-      handleSubmit() {
-        console.log(1)
+      submitLogin() {
+        this.$router.push({path:'/main'})
       },
       showPwd() {
         if(this.pwdType == 'password') {
