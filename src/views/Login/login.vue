@@ -2,28 +2,26 @@
   <div class="content">
     <div class="login">
         <div class="login-container">
-          <Form ref="formInline" :model="formInline">
+          <Form ref="formInline" :model="formInline" class="login-form">
             <div class="login-title">
               <h1>login form</h1>
-    <svg-icon icon-class="peoples" />
-
             </div>
-            <FormItem prop="user" class="login-input"> 
-                <Input type="text" prefix="ios-contact" v-model="formInline.user" placeholder="Username" class="login-input">
-                    <!-- <Icon type="ios-person-outline" size="14" slot="prepend"></Icon> -->
+            <FormItem prop="user" class="login-item" > 
+                <Input type="text" v-model="formInline.user" placeholder="Username"  class="login-input">
+                    <Icon type="ios-person-outline" size="14" slot="prepend"></Icon>
                 </Input>
             </FormItem>
-            <FormItem prop="password">
-                <Input :type="pwdType" prefix="ios-lock-outline" v-model="formInline.password" placeholder="Password" class="login-input"> 
-                    <!-- <Icon type="ios-lock-outline" slot="prepend" @click="showPwd"></Icon> -->
+            <FormItem prop="password" class="login-item">
+                <Input :type="pwdType"  v-model="formInline.password" placeholder="Password" class="login-input"> 
+                    <Icon type="ios-lock-outline" slot="prepend" @click="showPwd"></Icon>
                 </Input>
-                    <span  ><Icon type="ios-lock-outline" slot="prepend"></Icon></span>
+                <span class="show-pwd" @click="showPwd">
+                  <svg-icon :icon-class="pwdType === 'password' ? 'eyes_close' : 'eyes'" />
+                </span>
             </FormItem>
-            <FormItem>
+            <FormItem class="login-item">
                 <Button class="login-btn" type="primary" @click="handleSubmit('formInline')">Signin</Button>
-            </FormItem>123
-    <svg-icon icon-class="peoples" />
-
+            </FormItem>
           </Form>
         </div>
     </div>
@@ -63,8 +61,9 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 @bgc:#2d3a4b;
+@dark_gray:#889aa4;
 .content{
   overflow:hidden;
   // width: 100%;
@@ -75,19 +74,36 @@ export default {
   left: 0;
   position: absolute;
   background-color: @bgc;
+  .ivu-form-item-content {
+    // background: rgba(0, 0, 0, 0.1)!important;
+    border-radius: 5px;
+    color: #454545;
+  }
   & .login{
     margin: 0 auto;
     padding: 160px 35px 0px 35px;
     width: 520px;
+    position: relative;
     // height: 400px;
     .login-title{
       color: #fff;
       font-size: 26px;
       margin-bottom: 40px;
     }
-    .ivu-input {
+    & .ivu-input {
       width: 100%;
       height: 47px;
+      // background: transparent;
+    }
+    .show-pwd {
+      position: absolute;
+      font-size: 20px;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+      color: @dark_gray;
+      z-index: 100;
+      // background-color: #eee;
     }
     .login-btn{
       width: 100%;
