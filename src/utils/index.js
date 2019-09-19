@@ -348,3 +348,23 @@ export function removeClass(ele, cls) {
     ele.className = ele.className.replace(reg, ' ')
   }
 }
+
+
+/**
+*
+*/
+export function deleteFunc(menu) {
+  let arr = JSON.parse(JSON.stringify(menu))
+  const recur = (parent) => {
+    for(let i = 0,len = parent.length;i < len;i++) {
+      let e = parent[i]
+      if(e.children && e.children[0].type == 'menu') {
+        recur(e.children)
+      } else {
+        e.children = null
+      }
+    }
+  }
+  recur(arr)
+  return arr
+}

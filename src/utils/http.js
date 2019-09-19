@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
 import router from '@/router'
-import { Message } from 'iview'
 
 
 const service = axios.create({

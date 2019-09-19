@@ -29,6 +29,8 @@
 </template>
 <script>
 import { login } from '@/api/system.js'
+import Cookies from 'js-cookie'
+import axios from '@/utils/http.js'
 export default {
   data() {
     return {
@@ -41,12 +43,41 @@ export default {
   },
   methods:{
       _login() {
-        login(this.loginform).then(res => {
-          console.log(res)
+        let params = {
+          loginname:1000,
+          pwd:123
+        }
+        login(params).then(res => {
+          if(res.code == 0) {
+            this.loginSuccess(res.data)
+          }
         })
       },
       submitLogin() {
-        this.$router.push({path:'/main'})
+        this._login()
+      },
+      loginSuccess(data) {
+        const that = this
+        let expires = Math.ceil(data.tokenVal.expires / 3600)
+        Cookies.set('user_token',data.tokenVal.token,{ expires:expires })
+        Cookies.set('user_id',data.id,{ expires:expires })
+        Cookies.set('user_name',data.userName,{ expires:expires })
+        Cookies.set('user_loginName',data.loginName,{ expires:expires })
+        Cookies.set('user_companyId',data.companyId,{ expires:expires })
+
+        axios.defaults.headers.common['token'] = Cookies.get('user_token')
+
+        this.$Message.success('登录成功')
+        // this.$store.commit('setUserInfo',{
+        //   'user_token':data.tokenVal.token,
+        //   'user_id':data.id,
+        //   'user_name':data.userName,
+        //   'user_loginName':data.loginName,
+        //   'user_companyId':data.companyId
+        //   })
+        setTimeout(function() {
+          that.$router.push({path:'/main'})
+        },200)
       },
       showPwd() {
         if(this.pwdType == 'password') {
@@ -57,7 +88,6 @@ export default {
       }
   },
   mounted(){
-    this._login()
   }
 }
 </script>
