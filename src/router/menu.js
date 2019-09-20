@@ -1,5 +1,7 @@
 const Login = resolve => require(['@/views/Login/login.vue'],resolve)
 const Main = resolve => require(['@/views/Main/main.vue'],resolve)
+const Home = resolve => require(['@/views/Home/home.vue'],resolve)
+
 const userManage = resolve => require(['@/views/system/user_manage/user_manage'],resolve)
 
 
@@ -16,7 +18,14 @@ export const RouterMap = [
   {
     path:'/main',
     component:Main,
-    name:'main'
+    name:'main',
+    label:'首页',
+    children:[
+      {
+      path:'',
+      component:Home
+      }
+    ]
   },
   {
     path: '/sys',
