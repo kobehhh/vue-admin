@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <Hamburger class="hamburger-container"></Hamburger>
+    <Hamburger class="hamburger-container" :is-active="isActive" @click.native="toggleClick"></Hamburger>
     <Breadcrumb class="Breadcrumb-container"></Breadcrumb>
     <div class="right-menu">
       <search class="right-menu-item"></search>
@@ -29,6 +29,7 @@ import Hamburger from '@/components/Hamburger'
 import Breadcrumb from '@/components/Breadcrumb'
 import Search from '@/components/HeaderSearch'
 import Screenfull from '@/components/Screenfull'
+import { mapGetters } from 'vuex'
 export default {
   name: 'navbar',
   components: {
@@ -39,6 +40,14 @@ export default {
     },
   data() {
     return {}
+  },
+  methods: {
+    toggleClick() {
+      this.$emit('toggleClick')
+    }
+  },
+  computed: {
+    ...mapGetters({'isActive':'sidebar'})
   }
 }
 </script>
@@ -48,16 +57,20 @@ export default {
   position: relative;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
   background-color: #fff;
+  text-align: left;
   .hamburger-container {
     line-height: 46px;
+    padding: 0 15px;
+    margin-right: 15px;
     height: 100%;
-    float: left;
+    // float: left;
     cursor: pointer;
     transition: background .3s;
     -webkit-tap-highlight-color:transparent;
   }
   .Breadcrumb-container {
-    float: left;
+    line-height: 46px;
+    // float: left;
   }
   .right-menu {
     float: right;

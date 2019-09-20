@@ -3,8 +3,6 @@
     <Menu
               theme="dark"
               class="side-menu"
-              v-show="!isCollapsed"
-              
               width="auto"
               @on-select="jumpTo"
             >
@@ -52,7 +50,6 @@ export default {
   components: {},
   data() {
     return {
-      isCollapsed: false,
       menus:[],
     }
   },
@@ -75,7 +72,7 @@ export default {
       })
     },
     jumpTo(url) {
-      this.currentPath = url
+      this.$store.commit('app/setCurrentPath',url)
       this.$router.push({path:url})
     },
   },
