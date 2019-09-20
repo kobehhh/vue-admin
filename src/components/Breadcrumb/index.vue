@@ -1,6 +1,6 @@
 <template>
   <div class="breadcrumb">
-    <Breadcrumb :style="{margin: '10px 0'}">
+    <Breadcrumb>
               <BreadcrumbItem to="/main">
                 <Icon type="ios-home-outline" /> 首页
               </BreadcrumbItem>
