@@ -18,6 +18,7 @@ export default {
 <style lang="less" scoped>
 .app-main{
   min-height: calc(100vh - 84px);
+  padding: 20px;
 }
 /* fade */
 .fade-enter-active,

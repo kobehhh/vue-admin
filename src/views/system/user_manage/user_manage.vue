@@ -1,13 +1,103 @@
 <template>
-  <div>user</div>
+  <div>
+    <Table
+        ref="tableContent"
+        border 
+        :columns="userColumns"
+        :data="userList"
+        height="200"
+        class="tableContent">
+        <template slot-scope="{ row, index }" slot="action">    
+          <div class="action-style">
+            <Button  type="default" size="small" >修改</Button>
+            <Button  type="default" size="small" >删除</Button>
+            <Button  type="default" size="small" >重置密码</Button>
+          </div>
+        </template>   
+      </Table>
+  </div>
 </template>
 
 <script>
+import { userColumns } from '@/views/common/const.js'
+import { getUser } from '@/api/system.js'
+import Sortable from 'sortablejs'
 export default {
+  data() {
+    return {
+      userColumns:userColumns,
+      userList:[],
+      currentPage:1,
+      pageSize:10,
+      userName:'',
+      role:'',
+      groupId:'',
+      total:0,
+      list:[],
+      oldList:[],
+      newList:[]
+    }
+  },
+  methods: {
+    _getUser() {
+    let params = {
+      page: this.currentPage,
+      limit: this.pageSize,
+      userName: this.userName,
+      companyId: 'ALL',
+      roleCode: this.role,
+      groupId: this.groupId,
+      loginName:'1000'
+      }
+      getUser(params).then(res => {
+        if(res.code == 0) {
+          this.total = res.data.total
+          this.userList = res.data.records
+          this.oldList = this.userList.map(v => v.id)
+          console.log(this.oldList)
+          this.newList = this.userList.slice()
+          console.log(this.newList)
+          this.$nextTick(() => {
+            this.setSort()
+          })
+        }
+      })
+    },
+    //拖拽table
+    setSort() {
+      const el = this.$refs.tableContent.$el.querySelectorAll('.ivu-table-body > table > tbody')[0]
+      console.log(el)
+      this.sortable = Sortable.create(el, {
+        ghostClass: 'sortable-ghost', // Class name for the drop placeholder,
+        setData: function(dataTransfer) {
+          // to avoid Firefox bug
+          // Detail see : https://github.com/RubaXa/Sortable/issues/1012
+          dataTransfer.setData('Text', '')
+        },
+        onEnd: evt => {
+          console.log(evt.oldIndex,evt.newIndex)
+          const targetRow = this.userList.splice(evt.oldIndex, 1)[0]
+          this.userList.splice(evt.oldIndex, 0, targetRow)
 
+          // for show the changes, you can delete in you code
+          const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
+          this.newList.splice(evt.newIndex, 0, tempIndex)
+        }
+      })
+    }
+  },
+  mounted() {
+    this._getUser()
+  }
 }
 </script>
 
 <style>
-
+.sortable-ghost{
+  opacity: .8;
+  color: #fff!important;
+  background: #42b983!important;
+}
+.tableContent {
+}
 </style>

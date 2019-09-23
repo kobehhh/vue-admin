@@ -13,3 +13,10 @@ export const getMenu = params => {
     return res.data
   })
 }
+
+//分页查询用户列表
+export const getUser = (params) => {
+  return axios.get(`/system/user?${qs.stringify(params)}`).then((res) => {
+    return res.data
+  })
+}

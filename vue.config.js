@@ -71,26 +71,26 @@ module.exports = {
   devServer: {
     port: 8060,  
     proxy: {
-      // '/system': {
-      //   target: 'http://192.168.0.215:8762', // 开发环境
-      //   changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
-      //   ws: true
-      // },
-      // '/route': {
-      //   target: 'http://192.168.0.215:8762', // 开发环境
-      //   changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
-      //   ws: true
-      // },
       '/system': {
-        target: 'http://192.168.5.237:8762', // 开发环境
+        target: 'http://192.168.0.215:8762', // 开发环境
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
         ws: true
       },
       '/route': {
-        target: 'http://192.168.5.237:8762', // 开发环境
+        target: 'http://192.168.0.215:8762', // 开发环境
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
         ws: true
       },
+      // '/system': {
+      //   target: 'http://192.168.5.237:8762', // 开发环境
+      //   changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+      //   ws: true
+      // },
+      // '/route': {
+      //   target: 'http://192.168.5.237:8762', // 开发环境
+      //   changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+      //   ws: true
+      // },
     }
   }
 }
