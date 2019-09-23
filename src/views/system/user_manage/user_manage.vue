@@ -1,12 +1,14 @@
 <template>
-  <div>
-    <Table
+  <div v-load>
+    <div class="Content">
+      <Table
         ref="tableContent"
         border 
         :columns="userColumns"
         :data="userList"
         height="200"
-        class="tableContent">
+        
+        >
         <template slot-scope="{ row, index }" slot="action">    
           <div class="action-style">
             <Button  type="default" size="small" >修改</Button>
@@ -15,6 +17,7 @@
           </div>
         </template>   
       </Table>
+    </div>
   </div>
 </template>
 
@@ -54,11 +57,10 @@ export default {
           this.total = res.data.total
           this.userList = res.data.records
           this.oldList = this.userList.map(v => v.id)
-          console.log(this.oldList)
           this.newList = this.userList.slice()
-          console.log(this.newList)
           this.$nextTick(() => {
             this.setSort()
+            this.more()
           })
         }
       })
@@ -66,7 +68,6 @@ export default {
     //拖拽table
     setSort() {
       const el = this.$refs.tableContent.$el.querySelectorAll('.ivu-table-body > table > tbody')[0]
-      console.log(el)
       this.sortable = Sortable.create(el, {
         ghostClass: 'sortable-ghost', // Class name for the drop placeholder,
         setData: function(dataTransfer) {
@@ -75,7 +76,6 @@ export default {
           dataTransfer.setData('Text', '')
         },
         onEnd: evt => {
-          console.log(evt.oldIndex,evt.newIndex)
           const targetRow = this.userList.splice(evt.oldIndex, 1)[0]
           this.userList.splice(evt.oldIndex, 0, targetRow)
 
@@ -84,6 +84,15 @@ export default {
           this.newList.splice(evt.newIndex, 0, tempIndex)
         }
       })
+    },
+    more() {
+      // const table = this.$refs.tableContent
+      // let dom = document.querySelector('.tableContent')
+      // // const el = this.$refs.tableContent.$el.querySelectorAll('.ivu-table-body > table > tbody')[0]
+      // dom.addEventListener('scroll',function() {
+      //   console.log(dom.scrollHeight)
+      // })
+      // console.log(el)
     }
   },
   mounted() {
