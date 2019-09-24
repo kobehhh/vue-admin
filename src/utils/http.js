@@ -31,24 +31,24 @@ service.interceptors.response.use(function(response) {
       })
       break
     // 403: token过期
-    case 403:
-      // 弹出错误信息
-      Message({
-        type: 'error',
-        message: '登录信息过期，请重新登录'
-      })
-      // 清除token
-      localStorage.removeItem('token')
-      // 跳转登录页面，并将要浏览的页面fullPath传过去，登录成功后跳转需要访问的页面
-      setTimeout(() => {
-        router.replace({
-          path: '/login',
-          query: {
-            redirect: router.currentRoute.fullPath
-          }
-        })
-      }, 1000)
-      break
+    // case 403:
+    //   // 弹出错误信息
+    //   Message({
+    //     type: 'error',
+    //     message: '登录信息过期，请重新登录'
+    //   })
+    //   // 清除token
+    //   localStorage.removeItem('token')
+    //   // 跳转登录页面，并将要浏览的页面fullPath传过去，登录成功后跳转需要访问的页面
+    //   setTimeout(() => {
+    //     router.replace({
+    //       path: '/login',
+    //       query: {
+    //         redirect: router.currentRoute.fullPath
+    //       }
+    //     })
+    //   }, 1000)
+    //   break
     // 404请求不存在
     case 404:
       Message({

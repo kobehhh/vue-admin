@@ -1,19 +1,33 @@
 <template>
-  <div v-load>
-    <div class="Content">
-      <Table
+  <div >
+    <div class="Content" v-load="loadmore">
+      <!-- <Table
         ref="tableContent"
         border 
         :columns="userColumns"
         :data="userList"
         height="200"
-        
         >
         <template slot-scope="{ row, index }" slot="action">    
           <div class="action-style">
             <Button  type="default" size="small" >修改</Button>
             <Button  type="default" size="small" >删除</Button>
             <Button  type="default" size="small" >重置密码</Button>
+          </div>
+        </template>
+      </Table> -->
+      <Table
+        ref="tableContent"
+        border 
+        :columns="companyColumns"
+        :data="comList"
+        height="200"
+        >
+        <template slot-scope="{ row, index }" slot="action">    
+          <div class="action-style">
+            <Button  type="default" size="small" >修改</Button>
+            <Button  type="default" size="small" >删除</Button>
+            <!-- <Button  type="default" size="small" >重置密码</Button> -->
           </div>
         </template>   
       </Table>
@@ -22,13 +36,14 @@
 </template>
 
 <script>
-import { userColumns } from '@/views/common/const.js'
-import { getUser } from '@/api/system.js'
+import { userColumns,companyColumns } from '@/views/common/const.js'
+import { getUser,getCompanyByPage } from '@/api/system.js'
 import Sortable from 'sortablejs'
 export default {
   data() {
     return {
       userColumns:userColumns,
+      companyColumns:companyColumns,
       userList:[],
       currentPage:1,
       pageSize:10,
@@ -38,7 +53,9 @@ export default {
       total:0,
       list:[],
       oldList:[],
-      newList:[]
+      newList:[],
+      comList:[],
+      pages:null,
     }
   },
   methods: {
@@ -55,7 +72,7 @@ export default {
       getUser(params).then(res => {
         if(res.code == 0) {
           this.total = res.data.total
-          this.userList = res.data.records
+          this.userList = [...this.userList,...res.data.records]
           this.oldList = this.userList.map(v => v.id)
           this.newList = this.userList.slice()
           this.$nextTick(() => {
@@ -63,7 +80,27 @@ export default {
             this.more()
           })
         }
+        this.currentPage += 1
       })
+    },
+    _getCompanyByPage() {
+      getCompanyByPage({
+        page:this.currentPage,
+        limit:this.pageSize
+      }).then(res => {
+        if(res.code == 0) {
+          this.comList = this.comList.concat(res.data.records)
+          this.pages =  res.data.pages
+          console.log(this.comList)
+        }
+      })
+    },
+    loadmore() {
+      this.currentPage += 1
+      if(this.currentPage > this.pages) {
+        return
+      }
+      this._getCompanyByPage()
     },
     //拖拽table
     setSort() {
@@ -97,6 +134,7 @@ export default {
   },
   mounted() {
     this._getUser()
+    this._getCompanyByPage()
   }
 }
 </script>

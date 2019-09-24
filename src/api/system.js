@@ -20,3 +20,10 @@ export const getUser = (params) => {
     return res.data
   })
 }
+
+//分页获取公司列表
+export const getCompanyByPage = (params) => {
+  return axios.get('/system/company?'+qs.stringify(params)).then((res) => {
+    return res.data
+  })
+}

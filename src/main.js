@@ -23,11 +23,14 @@ Vue.prototype.$Modal = Modal
 Vue.prototype.$Message = Message
 
 Vue.directive('load', {
-  bind: function (el,dinding) {
-    let dom = el.querySelector('.Content')
+  bind: function (el,binding) {
+    let dom = el.querySelector('.ivu-table-body')
+    console.log(binding.value)  
     dom.addEventListener('scroll',function() {
-      // console.log(this.scrollHeight,this.scrollTop,this.clientHeight)
-      console.log(1)
+      const distance = this.scrollHeight - this.scrollTop - this.clientHeight
+      if(distance <= 0) {
+        binding.value()
+      }
     })
   }
 })

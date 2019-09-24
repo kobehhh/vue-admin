@@ -68,4 +68,120 @@ const userColumns = [
   }
 ]
 
-export {userColumns}
+const companyColumns = [
+  {
+    type: 'selection',
+    minWidth: 80
+  },
+  {
+    title: 'ID',
+    key: 'id',
+    minWidth: 80
+  },
+  {
+    title: '公司名称',
+    key: 'name',
+    sortable: true,
+    ellipsis: true,
+    minWidth: 100
+  },
+  {
+    title: '公司代码',
+    key: 'companyId',
+    sortable: true,
+    minWidth: 100
+  },
+  {
+    title: '公司类型',
+    key: 'themeText',
+    sortable: true,
+    minWidth: 130
+  },
+  {
+    title: '备注',
+    key: 'remark',
+    sortable: true,
+    minWidth: 100
+  },
+  {
+    title: '状态',
+    key: 'statusText',
+    minWidth: 100
+  },
+  {
+    title: '创建人',
+    key: 'createUser',
+    minWidth: 100
+  },
+  {
+    title: '创建人IP',
+    key: 'createIp',
+    minWidth: 100
+  },
+  {
+    title: '创建时间',
+    key: 'createDate',
+    minWidth: 100
+  },
+  {
+    title: '更新人',
+    key: 'updateUser',
+    minWidth: 100
+  },
+  {
+    title: '更新人IP',
+    key: 'updateIp',
+    minWidth: 100
+  },
+  {
+    title: '创建人',
+    key: 'createUser',
+    minWidth: 100
+  },
+  {
+    title: '更新时间',
+    key: 'updateDate',
+    minWidth: 100
+  },
+  {
+    title: '删除标识（0[正常],1[删除]）',
+    minWidth: 200
+  },
+  {
+    title: '操作',
+    fixed: 'right',
+    slot: 'action',
+    minWidth: 120,
+    // render: (h, params) => {
+    //   return h('div', [
+    //     h('Button', {
+    //       props: {
+    //         size: 'small'
+    //       },
+    //       style: {
+
+    //       },
+    //       on: {
+    //         click: () => {
+    //           tableEdit(params.row)
+    //         }
+    //       }
+    //     }, '修改'),
+    //     h('Button', {
+    //       props: {
+    //         size: 'small'
+    //       },
+    //       style: {
+
+    //       },
+    //       on: {
+    //         click: () => {
+    //           tableDelete(params.index)
+    //         }
+    //       }
+    //     }, "删除")
+    //   ])
+    // }
+  }
+]
+export {userColumns,companyColumns}
