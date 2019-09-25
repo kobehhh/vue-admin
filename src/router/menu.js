@@ -5,7 +5,7 @@ const Home = resolve => require(['@/views/Home/home.vue'],resolve)
 const userManage = resolve => require(['@/views/system/user_manage/user_manage'],resolve)
 const mixChart = resolve => require(['@/views/system/mix-chart/mix-chart'],resolve)
 const Cavans = resolve => require(['@/views/system/cavans/cavans'],resolve)
-
+const Animation = resolve => require(['@/views/system/canvas_animation/index'],resolve)
 export const RouterMap = [
   {
     path:'/',
@@ -51,6 +51,12 @@ export const RouterMap = [
         component:Cavans,
         label:'cavans',
         name:'company_manage',
+      },
+      {
+        path:'org_manage',
+        component:Animation,
+        label:'animation',
+        name:'org_manage',
       }
     ]
   }

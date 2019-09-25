@@ -16,6 +16,7 @@ export default {
   },
   methods: {
     initCavans() {
+      let sun,earth,moon
       const canvas = document.getElementById('tutorial')
       //获得 2d 上下文对象
       let ctx = canvas.getContext('2d')
@@ -149,7 +150,63 @@ export default {
       // ctx.fillRect(0, 0, 50, 50)
       // ctx.scale(0.5,0.5)
       // ctx.restore();
-    }
+
+
+      //合成
+      // ctx.fillStyle = "blue";
+      // ctx.fillRect(0, 0, 200, 200);
+ 
+      // ctx.globalCompositeOperation = "source-in"; //全局合成操作
+      // ctx.fillRect(100, 100, 200, 200);
+
+      //剪裁路径
+      // ctx.beginPath();
+      // ctx.arc(20,20, 100, 0, Math.PI * 2);
+      // // ctx.clip();
+ 
+      // ctx.fillStyle = "pink";
+      // ctx.fillRect(20, 20, 100,100);
+
+
+      // this.draw()
+    },
+
+
+    //动画
+    draw() {
+    ctx.clearRect(0, 0, 300, 300); //清空所有的内容
+    /*绘制 太阳*/
+    ctx.drawImage(sun, 0, 0, 300, 300);
+ 
+    ctx.save();
+    ctx.translate(150, 150);
+ 
+    //绘制earth轨道
+    ctx.beginPath();
+    ctx.strokeStyle = "rgba(255,255,0,0.5)";
+    ctx.arc(0, 0, 100, 0, 2 * Math.PI)
+    ctx.stroke()
+ 
+    let time = new Date();
+    //绘制地球
+    ctx.rotate(2 * Math.PI / 60 * time.getSeconds() + 2 * Math.PI / 60000 * time.getMilliseconds())
+    ctx.translate(100, 0);
+    ctx.drawImage(earth, -12, -12)
+ 
+    //绘制月球轨道
+    ctx.beginPath();
+    ctx.strokeStyle = "rgba(255,255,255,.3)";
+    ctx.arc(0, 0, 40, 0, 2 * Math.PI);
+    ctx.stroke();
+ 
+    //绘制月球
+    ctx.rotate(2 * Math.PI / 6 * time.getSeconds() + 2 * Math.PI / 6000 * time.getMilliseconds());
+    ctx.translate(40, 0);
+    ctx.drawImage(moon, -3.5, -3.5);
+    ctx.restore();
+ 
+    requestAnimationFrame(draw);
+}
   },
 }
 </script>
