@@ -91,7 +91,6 @@ export default {
         if(res.code == 0) {
           this.comList = this.comList.concat(res.data.records)
           this.pages =  res.data.pages
-          console.log(this.comList)
         }
       })
     },

@@ -8,7 +8,7 @@
           hide-trigger 
           class="sider" 
           v-model.trim="isCollapsed">
-          <Sidebar v-show="!isCollapsed"></Sidebar>
+          <Sidebar v-show="!isCollapsed" :menus="menus"></Sidebar>
         </Sider>
         <Layout>
             <Header v-if="true">
@@ -28,6 +28,8 @@ import Sidebar  from './components/sidebar'
 import AppMain  from './components/app-main'
 import Navbar  from './components/navbar'
 import TagsView  from './components/tags-view'
+import { getMenu } from '@/api/system.js'
+import { deleteFunc } from '@/utils/index.js'
 import { mapState } from 'vuex'
 
 export default {
@@ -35,7 +37,8 @@ export default {
   components: { Sidebar,AppMain,Navbar,TagsView },
   data() {
     return {
-      isCollapsed:false
+      isCollapsed:false,
+      menus:[],
     }
   },
   computed: {
@@ -47,7 +50,27 @@ export default {
     collapsedSider() {
       this.$refs.siderbar.toggleCollapse()
       this.$store.commit('app/setSidebar',this.isCollapsed)
-    }
+    },
+    _getMenu() {
+      let params = {
+        systemFlag: "sys_config",
+        loginName: 1000,
+        companyId: "ALL"
+      };
+      getMenu(params).then(res => {
+        if(res.code == 0) {
+          let menus = [],
+            tem = res.data[0].children;
+          for (let i = 0, len = tem.length; i < len; i++) {
+            menus.push(tem[i]);
+          }
+          this.menus = deleteFunc(menus);
+        }
+      })
+    },
+  },
+  mounted() {
+    this._getMenu()
   }
 }
 </script>

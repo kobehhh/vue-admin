@@ -3,7 +3,8 @@ const Main = resolve => require(['@/views/Main/main.vue'],resolve)
 const Home = resolve => require(['@/views/Home/home.vue'],resolve)
 
 const userManage = resolve => require(['@/views/system/user_manage/user_manage'],resolve)
-
+const mixChart = resolve => require(['@/views/system/mix-chart/mix-chart'],resolve)
+const Cavans = resolve => require(['@/views/system/cavans/cavans'],resolve)
 
 export const RouterMap = [
   {
@@ -37,7 +38,19 @@ export const RouterMap = [
         path:'user_manage',
         component:userManage,
         label:'用户管理',
-        ame:'user_manage',
+        name:'user_manage',
+      },
+      {
+        path:'rule_manage',
+        component:mixChart,
+        label:'echart',
+        name:'user_manage',
+      },
+      {
+        path:'company_manage',
+        component:Cavans,
+        label:'cavans',
+        name:'company_manage',
       }
     ]
   }

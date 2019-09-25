@@ -48,36 +48,39 @@ import { deleteFunc } from '@/utils/index.js'
 export default {
   name: 'sidebar',
   components: {},
-  data() {
-    return {
-      menus:[],
+  props:{
+    menus:{
+      type:Array,
+      default() {
+        return 
+      }
     }
   },
   methods:{
-    _getMenu() {
-      let params = {
-        systemFlag: "sys_config",
-        loginName: 1000,
-        companyId: "ALL"
-      };
-      getMenu(params).then(res => {
-        if(res.code == 0) {
-          let menus = [],
-            tem = res.data[0].children;
-          for (let i = 0, len = tem.length; i < len; i++) {
-            menus.push(tem[i]);
-          }
-          this.menus = deleteFunc(menus);
-        }
-      })
-    },
+    // _getMenu() {
+    //   let params = {
+    //     systemFlag: "sys_config",
+    //     loginName: 1000,
+    //     companyId: "ALL"
+    //   };
+    //   getMenu(params).then(res => {
+    //     if(res.code == 0) {
+    //       let menus = [],
+    //         tem = res.data[0].children;
+    //       for (let i = 0, len = tem.length; i < len; i++) {
+    //         menus.push(tem[i]);
+    //       }
+    //       this.menus = deleteFunc(menus);
+    //     }
+    //   })
+    // },
     jumpTo(url) {
       this.$store.commit('app/setCurrentPath',url)
       this.$router.push({path:url})
     },
   },
   mounted() {
-    this._getMenu()
+    console.log(this.menu)
   }
 }
 </script>
