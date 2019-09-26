@@ -20,6 +20,8 @@ export default {
       const canvas = document.getElementById('tutorial')
       //获得 2d 上下文对象
       let ctx = canvas.getContext('2d')
+
+
       // ctx.fillStyle = "rgb(200,0,0)";
       // //绘制矩形
       // ctx.fillRect (10, 10, 55, 50);
@@ -170,43 +172,6 @@ export default {
 
       // this.draw()
     },
-
-
-    //动画
-    draw() {
-    ctx.clearRect(0, 0, 300, 300); //清空所有的内容
-    /*绘制 太阳*/
-    ctx.drawImage(sun, 0, 0, 300, 300);
- 
-    ctx.save();
-    ctx.translate(150, 150);
- 
-    //绘制earth轨道
-    ctx.beginPath();
-    ctx.strokeStyle = "rgba(255,255,0,0.5)";
-    ctx.arc(0, 0, 100, 0, 2 * Math.PI)
-    ctx.stroke()
- 
-    let time = new Date();
-    //绘制地球
-    ctx.rotate(2 * Math.PI / 60 * time.getSeconds() + 2 * Math.PI / 60000 * time.getMilliseconds())
-    ctx.translate(100, 0);
-    ctx.drawImage(earth, -12, -12)
- 
-    //绘制月球轨道
-    ctx.beginPath();
-    ctx.strokeStyle = "rgba(255,255,255,.3)";
-    ctx.arc(0, 0, 40, 0, 2 * Math.PI);
-    ctx.stroke();
- 
-    //绘制月球
-    ctx.rotate(2 * Math.PI / 6 * time.getSeconds() + 2 * Math.PI / 6000 * time.getMilliseconds());
-    ctx.translate(40, 0);
-    ctx.drawImage(moon, -3.5, -3.5);
-    ctx.restore();
- 
-    requestAnimationFrame(draw);
-}
   },
 }
 </script>

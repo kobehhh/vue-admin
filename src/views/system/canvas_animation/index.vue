@@ -13,7 +13,7 @@ export default {
     }
   },
   mounted() {
-    this.initCavans()
+    // this.initCavans()
   },
   methods: {
     initCavans() {
