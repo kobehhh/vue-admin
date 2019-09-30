@@ -1,70 +1,205 @@
 <template>
-    <canvas id="tutorial" width="300" height="300"></canvas>  
+    <div>
+      <canvas id="tutorial" width="400" height="600" style="margin:50px"></canvas>   
+    </div> 
 </template>
 
 <script>
 export default {
   data() {
     return {
-      // sun:null,
-      // earth:null,
-      // moon:null,
-      ctx:null
+
     }
   },
   mounted() {
-    // this.initCavans()
+    this.goBarChart()
   },
   methods: {
-    initCavans() {
-      const sun = new Image();
-      const earth = new Image();
-      const moon = new Image(); 
-      const canvas = document.getElementById('tutorial')
-      //获得 2d 上下文对象
-      // sun.src = "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3945696032,4265863540&fm=26&gp=0.jpg";
-      // earth.src = "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2319196103,2510865082&fm=26&gp=0.jpg";
-      // moon.src = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=235508888,990602741&fm=26&gp=0.jpg";
-      this.ctx = canvas.getContext('2d')
-      setInterval(this.draw,10)
-      // this.draw()
-    },
-    draw() {
-    this.ctx.clearRect(0, 0, 300, 300); //清空所有的内容
-    /*绘制 太阳*/
- 
-    this.ctx.save();
-    this.ctx.translate(150, 150);
- 
-    //绘制earth轨道
-    this.ctx.beginPath()
-    this.ctx.strokeStyle = "black";
-    this.ctx.arc(0, 0, 100, 0, 2 * Math.PI)
-    this.ctx.stroke()
- 
-    let time = new Date()
-    //绘制地球
-    this.ctx.rotate(2 * Math.PI / 60 * time.getSeconds() + 2 * Math.PI / 60000 * time.getMilliseconds())
-    this.ctx.translate(100, 0)
-    this.ctx.beginPath()
-    this.ctx.strokeStyle = "black"
-    this.ctx.arc(0, 0, 40, 0, 2 * Math.PI)
-    this.ctx.stroke()
- 
-    //绘制月球轨道
-    
-    //绘制月球
-    this.ctx.rotate(2 * Math.PI / 6 * time.getSeconds() + 2 * Math.PI / 6000 * time.getMilliseconds())
-    this.ctx.translate(40, 0)
-    this.ctx.beginPath()
-    this.ctx.strokeStyle = "black"
-    this.ctx.arc(0, 0, 20, 0, 2 * Math.PI)
-    this.ctx.stroke()
-    this.ctx.restore()
+    goBarChart(dataArr){
+            // 声明所需变量
+            var canvas,ctx;
+            // 图表属性
+            var cWidth, cHeight, cMargin, cSpace;
+            var originX, originY;
+            // 柱状图属性
+            var bMargin, tobalBars, bWidth, maxValue;
+            var totalYNomber;
+            var gradient;
+
+            // 运动相关变量
+            var ctr, numctr, speed;
+            //鼠标移动
+            var mousePosition = {};
+
+            // 获得canvas上下文
+            canvas = document.getElementById("barChart");
+            if(canvas && canvas.getContext){
+                ctx = canvas.getContext("2d");
+            }
+            initChart(); // 图表初始化
+            drawLineLabelMarkers(); // 绘制图表轴、标签和标记
+            drawBarAnimate(); // 绘制柱状图的动画
+            //检测鼠标移动
+            var mouseTimer = null;
+            canvas.addEventListener("mousemove",function(e){
+                e = e || window.event;
+                if( e.layerX || e.layerX==0 ){
+                    mousePosition.x = e.layerX;
+                    mousePosition.y = e.layerY;
+                }else if( e.offsetX || e.offsetX==0 ){
+                    mousePosition.x = e.offsetX;
+                    mousePosition.y = e.offsetY;
+                }
+                //console.log(mousePosition);
+                clearTimeout(mouseTimer);
+                mouseTimer = setTimeout(function(){
+                    ctx.clearRect(0,0,canvas.width, canvas.height);
+                    drawLineLabelMarkers();
+                    drawBarAnimate(true);
+                },10);
+            });
+
+            //点击刷新图表
+            canvas.onclick = function(){
+                initChart(); // 图表初始化
+                drawLineLabelMarkers(); // 绘制图表轴、标签和标记
+                drawBarAnimate(); // 绘制折线图的动画
+            };
 
 
-    // requestAnimationFrame(this.draw)
-}
+            // 图表初始化
+            function initChart(){
+                // 图表信息
+                cMargin = 30;
+                cSpace = 60;
+                cHeight = canvas.height - cMargin*2 - cSpace;
+                cWidth = canvas.width - cMargin*2 - cSpace;
+                originX = cMargin + cSpace;
+                originY = cMargin + cHeight;
+
+                // 柱状图信息
+                bMargin = 15;
+                tobalBars = dataArr.length;
+                bWidth = parseInt( cWidth/tobalBars - bMargin );
+                maxValue = 0;
+                for(var i=0; i<dataArr.length; i++){
+                    var barVal = parseInt( dataArr[i][1] );
+                    if( barVal > maxValue ){
+                        maxValue = barVal;
+                    }
+                }
+                maxValue += 50;
+                totalYNomber = 10;
+                // 运动相关
+                ctr = 1;
+                numctr = 100;
+                speed = 10;
+
+                //柱状图渐变色
+                gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                gradient.addColorStop(0, 'green');
+                gradient.addColorStop(1, 'rgba(67,203,36,1)');
+
+            }
+
+            // 绘制图表轴、标签和标记
+            function drawLineLabelMarkers(){
+                ctx.translate(0.5,0.5);  // 当只绘制1像素的线的时候，坐标点需要偏移，这样才能画出1像素实线
+                ctx.font = "12px Arial";
+                ctx.lineWidth = 1;
+                ctx.fillStyle = "#000";
+                ctx.strokeStyle = "#000";
+                // y轴
+                drawLine(originX, originY, originX, cMargin);
+                // x轴
+                drawLine(originX, originY, originX+cWidth, originY);
+
+                // 绘制标记
+                drawMarkers();
+                ctx.translate(-0.5,-0.5);  // 还原位置
+            }
+
+            // 画线的方法
+            function drawLine(x, y, X, Y){
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(X, Y);
+                ctx.stroke();
+                ctx.closePath();
+            }
+
+            // 绘制标记
+            function drawMarkers(){
+                ctx.strokeStyle = "#E0E0E0";
+                // 绘制 y
+                var oneVal = parseInt(maxValue/totalYNomber);
+                ctx.textAlign = "right";
+                for(var i=0; i<=totalYNomber; i++){
+                    var markerVal =  i*oneVal;
+                    var xMarker = originX-5;
+                    var yMarker = parseInt( cHeight*(1-markerVal/maxValue) ) + cMargin;
+                    //console.log(xMarker, yMarker+3,markerVal/maxValue,originY);
+                    ctx.fillText(markerVal, xMarker, yMarker+3, cSpace); // 文字
+                    if(i>0){
+                        drawLine(originX, yMarker, originX+cWidth, yMarker);
+                    }
+                }
+                // 绘制 x
+                ctx.textAlign = "center";
+                for(var i=0; i<tobalBars; i++){
+                    var markerVal = dataArr[i][0];
+                    var xMarker = parseInt( originX+cWidth*(i/tobalBars)+bMargin+bWidth/2 );
+                    var yMarker = originY+15;
+                    ctx.fillText(markerVal, xMarker, yMarker, cSpace); // 文字
+                }
+                // 绘制标题 y
+                ctx.save();
+                ctx.rotate(-Math.PI/2);
+                ctx.fillText("产 量", -canvas.height/2, cSpace-10);
+                ctx.restore();
+                // 绘制标题 x
+                ctx.fillText("年份", originX+cWidth/2, originY+cSpace/2+10);
+            };
+
+            //绘制柱形图
+            function drawBarAnimate(mouseMove){
+                for(var i=0; i<tobalBars; i++){
+                    var oneVal = parseInt(maxValue/totalYNomber);
+                    var barVal = dataArr[i][1];
+                    var barH = parseInt( cHeight*barVal/maxValue * ctr/numctr );
+                    var y = originY - barH;
+                    var x = originX + (bWidth+bMargin)*i + bMargin;
+                    drawRect( x, y, bWidth, barH, mouseMove );  //高度减一避免盖住x轴
+                    ctx.fillText(parseInt(barVal*ctr/numctr), x+15, y-8); // 文字
+                }
+                if(ctr<numctr){
+                    ctr++;
+                    setTimeout(function(){
+                        ctx.clearRect(0,0,canvas.width, canvas.height);
+                        drawLineLabelMarkers();
+                        drawBarAnimate();
+                    }, speed);
+                }
+            }
+
+            //绘制方块
+            function drawRect( x, y, X, Y, mouseMove ){
+
+                ctx.beginPath();
+                ctx.rect( x, y, X, Y );
+                if(mouseMove && ctx.isPointInPath(mousePosition.x, mousePosition.y)){ //如果是鼠标移动的到柱状图上，重新绘制图表
+                    ctx.fillStyle = "green";
+                }else{
+                    ctx.fillStyle = gradient;
+                    ctx.strokeStyle = gradient;
+                }
+                ctx.fill();
+                ctx.closePath();
+
+            }
+
+
+        }
   }
 }
 </script>
