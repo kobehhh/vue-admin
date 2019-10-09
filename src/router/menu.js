@@ -7,6 +7,8 @@ const mixChart = resolve => require(['@/views/system/mix-chart/mix-chart'],resol
 const Cavans = resolve => require(['@/views/system/cavans/cavans'],resolve)
 const Animation = resolve => require(['@/views/system/canvas_animation/index'],resolve)
 const Test = resolve => require(['@/views/system/test/index'],resolve)
+const SvgIcon = resolve => require(['@/views/system/svg/index'],resolve)
+
 
 export const RouterMap = [
   {
@@ -63,6 +65,12 @@ export const RouterMap = [
       {
         path:'role_manage',
         component:Test,
+        label:'Test',
+        name:'org_manage',
+      },
+      {
+        path:'menu_manage',
+        component:SvgIcon,
         label:'Test',
         name:'org_manage',
       }

@@ -294,14 +294,10 @@ export default {
     },
     isIn({x,y}) {
       if(x < 0 || y < 0) return 
-      // return this.data.filter((item,index) => {
-      //   if(item.left<=x && item.right>=x && y<= item.top) return true
-      // }).length
-      console.log(this.data[9].left<=x,this.data[9].right>=x,y<= this.data[9].top)
       for(let i = 0,len = this.data.length;i < len;i++) {
         if(this.data[i].left<=x && this.data[i].right>=x && y<= this.data[i].top) {
-          this.ctx.clearRect(0,0,this.width,this.height)
-          this.initcanvas()
+          // this.ctx.clearRect(0,0,this.width,this.height)
+          // this.initcanvas()
           this.ctx.fillStyle = 'rgba(255,165,0,0.5)'
           this.ctx.fillRect(x,y,100,100)
         }
