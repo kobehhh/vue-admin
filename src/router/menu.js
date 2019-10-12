@@ -8,7 +8,7 @@ const Cavans = resolve => require(['@/views/system/cavans/cavans'],resolve)
 const Animation = resolve => require(['@/views/system/canvas_animation/index'],resolve)
 const Test = resolve => require(['@/views/system/test/index'],resolve)
 const SvgIcon = resolve => require(['@/views/system/svg/index'],resolve)
-
+const D3 = resolve => require(['@/views/system/D3/index'],resolve)
 
 export const RouterMap = [
   {
@@ -73,6 +73,12 @@ export const RouterMap = [
         component:SvgIcon,
         label:'Test',
         name:'org_manage',
+      },
+      {
+        path:'app_manage',
+        component:D3,
+        label:'D3',
+        name:'D3',
       }
     ]
   }
