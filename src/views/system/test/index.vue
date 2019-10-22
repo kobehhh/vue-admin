@@ -11,6 +11,7 @@
 
 <script>
 import Papa from 'papaparse'
+import * as R from 'ramda'
 export default {
   data() {
     return {
@@ -35,6 +36,7 @@ export default {
   },
   mounted() {
     // this.initcanvas()
+    console.log(R.add(7,10))
   },
   methods: {
     initcanvas() {

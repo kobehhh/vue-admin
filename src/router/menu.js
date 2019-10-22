@@ -9,6 +9,7 @@ const Animation = resolve => require(['@/views/system/canvas_animation/index'],r
 const Test = resolve => require(['@/views/system/test/index'],resolve)
 const SvgIcon = resolve => require(['@/views/system/svg/index'],resolve)
 const D3 = resolve => require(['@/views/system/D3/index'],resolve)
+const WebSocket = resolve => require(['@/views/system/websocket/index'],resolve)
 
 export const RouterMap = [
   {
@@ -79,7 +80,13 @@ export const RouterMap = [
         component:D3,
         label:'D3',
         name:'D3',
-      }
+      },
+      {
+        path:'dictionar_manage',
+        component:WebSocket,
+        label:'websocket',
+        name:'websocket',
+      },
     ]
   }
 ]

@@ -13,6 +13,14 @@ import './icons'
 //css
 import 'iview/dist/styles/iview.css'
 
+import socketio from 'socket.io-client'
+// Vue.use(VueSocketio, socketio('http://localhost:4000/'))
+import VueSocketio from 'vue-socket.io'
+Vue.use(new VueSocketio({
+  debug: true,
+  // 服务器端地址
+  connection: 'http://localhost:4000',
+ }))
 
 // //derectives
 // import loadmore from '@/derective/loadMore'

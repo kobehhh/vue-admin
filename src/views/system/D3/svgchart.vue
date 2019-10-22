@@ -6,8 +6,9 @@
       <br>
       <div>name:{{rightData.name}}</div>
       <div>sale:{{rightData.sale}}</div>
-      {{data[1]}}
+      {{rightData}}
       </div>
+      {{dataList}}
   </div>
 </template>
 
@@ -15,7 +16,7 @@
 export default {
 data() {
   return {
-    data:[{name:'we',sale:22},{name:'l',sale:50},{name:'w',sale:32},{name:'l',sale:28},{name:'w',sale:12},{name:'l',sale:18},{name:'w',sale:12},{name:'w',sale:12}],
+    dataList:[{name:'l',sale:50},{name:'w',sale:32},{name:'l',sale:28},{name:'w',sale:12},{name:'l',sale:18},{name:'w',sale:12},{name:'w',sale:12}],
     date:['周一','周二','周三','周四','周五','周六','周日'],
     yNum:10,
     xNum:0,
@@ -35,10 +36,10 @@ watch:{
 
 },
 mounted() {
-  this.fdrawBar(this.data)
+  this.fdrawBar(this.dataList)
 },
 methods:{
-  fdrawBar(data) {
+  fdrawBar(dataList) {
      var barGraph = document.querySelector("#bar-graph")
      var graphWidth = 900
      var graphHeight = 600
@@ -51,7 +52,7 @@ methods:{
      //柱的间隔
      const barGap = 50
      //单个数据柱子的宽
-     this.barWidth = ((axisWidth - graphPadding - barGap * (data.length ))) / data.length
+     this.barWidth = ((axisWidth - graphPadding - barGap * (dataList.length ))) / dataList.length
      let barWidth = this.barWidth
 
      //每根柱子的颜色
@@ -94,7 +95,7 @@ methods:{
     //计算每一个刻度的值
     var num = Math.floor( this.dataMax / this.yNum )
     //x轴刻度的数量
-    this.xNum = this.data.length
+    this.xNum = this.dataList.length
     //  barHtml.push("<line x1=" + graphPadding + " y1=" + (graphHeight-graphPadding - i*yHeight) + " x2=" + (graphPadding-5) + " y2=" + (graphHeight-graphPadding - i*yHeight) + " stroke=" + axisColor + " stroke-width='1'/>")
   
      for(let i = this.yNum;i > 0;i--) {
@@ -104,13 +105,13 @@ methods:{
       barHtml.push("<text x='10' y="+ (graphHeight-graphPadding - i*yHeight + 5) + " fill='red'>"+i*num+"</text>")
      }
      //x刻度 刻度值
-     for(let i = 0,len = this.data.length;i <  len;i++) {
+     for(let i = 0,len = this.dataList.length;i <  len;i++) {
       barHtml.push("<line x1=" + (graphPadding+barGap+barWidth/2+i*( barGap+ barWidth)) + " y1="+axisHeigt+" x2=" + (graphPadding+barGap+barWidth/2+i*( barGap+ barWidth)) + " y2="+(axisHeigt+5)+" stroke=" + axisColor + " stroke-width='1'/>")
-      let num = this.data[i].sale
+      let num = this.dataList[i].sale
       let h = num/rate
       let y = axisHeigt - h - 1
       let x = (graphPadding+barGap+i*( barGap+ barWidth))
-      let posData = this.data[i]
+      let posData = this.dataList[i]
       posData.top = y
       posData.left = x
       posData.buttom = y + h
@@ -154,7 +155,9 @@ methods:{
           console.log("放大")
         }else {
           console.log("缩小")
+          that.$set(that.dataList,0,{name: 'zhangsan',sale: 15})
           that.$forceUpdate()
+          // this.$set(that.data, this.currentRow, this.popupData)
           // that.$set(that.data, 1, {name:'wlf',sale:100})
           // that.data.push({name:'hhh',sale:44})
         }
@@ -168,9 +171,9 @@ methods:{
  //找到最大值
   findMax() {
     let temp = 0
-    for(let i = 0,len =this.data.length;i < len;i++) {
-      if(temp < this.data[i].sale){
-        temp = this.data[i].sale
+    for(let i = 0,len =this.dataList.length;i < len;i++) {
+      if(temp < this.dataList[i].sale){
+        temp = this.dataList[i].sale
     }
   }
   this.dataMax = temp
@@ -184,9 +187,10 @@ methods:{
     let flag = false
     for(let i = 0,len =data.length;i < len;i++) {
       if(x >= data[i].left && x <= data[i].right && y >= data[i].top && y <= data[i].buttom) {
-        this.$forceUpdate()
+        this.rightData = {}
         this.rightData.name = this.positionData[i].name
         this.rightData.sale = this.positionData[i].sale
+        this.$forceUpdate()
         this.showMes(e)
         flag = true
       }
@@ -199,7 +203,7 @@ methods:{
   //显示信息
   showMes(e) {
     var div=document.getElementById("mes")
-    let x = e.layerX+div.offsetWidth/2+"px"
+    let x = e.layerX+"px"
     let y = e.layerY+"px"
     let w = div.offsetWidth
     let h = div.offsetHeight
@@ -211,7 +215,7 @@ methods:{
       div.style.top = y
     }
     if(e.offsetX + w > this.graphWidth) {
-      div.style.left = e.offsetX - div.offsetWidth/2+"px"
+      div.style.left = e.offsetX+"px"
     }else {
       div.style.left = x
     }
