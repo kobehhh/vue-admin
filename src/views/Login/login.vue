@@ -67,7 +67,7 @@ export default {
 
         axios.defaults.headers.common['token'] = Cookies.get('user_token')
 
-        this.$Message.success('登录成功')
+        this.$Message.success('登录成功111')
         // this.$store.commit('setUserInfo',{
         //   'user_token':data.tokenVal.token,
         //   'user_id':data.id,
